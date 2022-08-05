@@ -1,0 +1,7 @@
+.idea
+*.iml
+data
+laptoppc/static/uploads
+__pycache__
+.venv
+

@@ -1,0 +1,2 @@
+cd laptoppc
+../.venv/bin/python ../.venv/bin/gunicorn "webserver:init_app()"

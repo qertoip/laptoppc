@@ -1,0 +1,44 @@
+<!doctype html>
+<head>
+    <title>Laptop vs PC Image Classifier</title>
+</head>
+
+<body style="background: black; color: lightsteelblue; font-size: 1em;">
+
+    {% if filename %}
+    <div>
+        <h1>{{ prediction['class_name'] }}</h1>
+        <p>laptop: {{ prediction['laptop'] }}</p>
+        <p>pc: {{ prediction['pc'] }}</p>
+    </div>
+    <div>
+        <img src="{{ url_for('display_image', filename=filename) }}" style="max-width: 640px; max-height: 480px;">
+    </div>
+    {% endif %}
+
+    <h2>Upload a JPEG file of laptop or desktop PC</h2>
+    <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </p>
+    <form method="post" action="/" enctype="multipart/form-data">
+        <div style="width: 100%;">
+        <div style="float: left;">
+            <p>
+                <input type="file" name="file" autocomplete="off" required style="font-size: 1em;">
+            </p>
+        </div>
+        <div style="margin-left: 16px; float: left;">
+            <p>
+                <input type="submit" value="Submit for classification!" style="font-size: 1em;">
+            </p>
+        </div>
+        </div>
+    </form>
+
+</body>
