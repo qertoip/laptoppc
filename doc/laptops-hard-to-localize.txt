@@ -1,0 +1,26 @@
+
+Laptops for testing object localization (non-trivial cases):
+
+    '49def37ba21a4448aee1e46ed8885251.jpg',
+    '59d5351caf0f420d959690dfdff63f80.jpg',
+    'bcc1f8c6f0884717bee38443b8f966fa.jpg',
+    '727c54cd2282484caebcb92863b300e5.jpg',
+    '804e0752814748cdb7ddf200e049909f.jpg',
+    '21a9ee42fff94b6b99185824ec3c70a5.jpg'
+]
+
+4ca6812db71043009bbd62d28d61ed34.jpg
+
+0b5deb6cf6ad46a39fedc540cc4168d9.jpg
+
+f04d30c781154a4794b649890939cae1.jpg
+
+f5353761ee044a0d8c4238222b972c2e.jpg
+
+c99a8b4bbe1b44559790a696364bcd3c.jpg
+
+b80f3282e5d8424b940541fde715437c.jpg
+
+c9d86ae93f89464ea471e3af8c4fd8c7.jpg
+
+c8c3a2ab2f5b45d98af2cc34d9418d06.jpg

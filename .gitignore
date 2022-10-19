@@ -2,6 +2,7 @@
 *.iml
 data
 laptoppc/static/uploads
+laptoppc/static/output
 __pycache__
 .venv
-
+model/*.bak
