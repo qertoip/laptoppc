@@ -34,7 +34,6 @@ def development_main():
 
 
 def before_wsgi_app():
-    flask.secret_key = "DpNTqr9g9yCQDDdyHbrAoi2D"
     flask.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     flask.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     load_model()
@@ -71,7 +70,6 @@ def upload_image():
             path.unlink()
             return redirect(request.url)
 
-        #flash('Success!!')
         prediction, heatmap = predict_with_heatmap_for(path)
         heatmap_filename = save_aside(heatmap, path)
         return render_template(
