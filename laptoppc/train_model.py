@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import logging as log
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # silence TF logging (must be run before importing tf or keras)
@@ -11,7 +10,8 @@ import keras.optimizers
 import keras.callbacks
 
 
-from create_model import create_model, model_path
+from common import data_path, model_path
+from create_model import create_model
 
 
 def main():
@@ -58,12 +58,6 @@ def train_model(model: keras.Model, train_set, test_set):
         validation_data=test_set
     )
     model.save(filepath=model_path())
-
-
-def data_path():
-    p = Path(__file__).parent.parent / 'data'
-    p.mkdir(exist_ok=True)
-    return p
 
 
 def setup_logging():

@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # silence TF logging (must be run before importing tf or keras)
 import keras
@@ -29,9 +28,3 @@ def create_model() -> keras.Model:
     )
 
     return new_model
-
-
-def model_path() -> Path:
-    p = Path(__file__).parent.parent / 'model'
-    p.mkdir(exist_ok=True)
-    return p / 'effnet_based_laptop_vs_pc_classifier.h5'

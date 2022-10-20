@@ -1,8 +1,8 @@
-from pathlib import Path
 import logging as log
 
 import DuckDuckGoImages as ddg
 
+from common import data_path
 
 """
 This could be used to re-create data/ directory from scratch. However, lots of manual effort went into fixing
@@ -30,10 +30,6 @@ def remove_fake_jpegs():
         if path.is_file() and imghdr.what(path) != 'jpeg':
             log.info(f'Removing fake JPEG file: {path}')
             path.unlink()
-
-
-def data_path():
-    return Path(__file__).parent.parent / 'data'
 
 
 def setup_logging():

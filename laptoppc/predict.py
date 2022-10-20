@@ -1,62 +1,20 @@
 import os
-from pathlib import Path
 from typing import Union
 
 import numpy as np
-
-from helpers import scale_to_0_1, scale_to_0_255
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # silence TF logging (must be run before importing tf or keras)
 import keras
 import matplotlib.cm as colormap
 from PIL import Image
 
-from create_model import create_model, model_path
+from common import scale_to_0_1, scale_to_0_255, model_path
+from create_model import create_model
 
+
+# The model is global singleton because it's slow to load and warm up
 model: Union[keras.Model, None] = None
 model_with_heatmap: Union[keras.Model, None] = None
-
-
-def main():
-    load_model()
-
-    LAPTOP_HASHES = [
-        '49def37ba21a4448aee1e46ed8885251.jpg',
-        '59d5351caf0f420d959690dfdff63f80.jpg',
-        'bcc1f8c6f0884717bee38443b8f966fa.jpg',
-        '727c54cd2282484caebcb92863b300e5.jpg',
-        '804e0752814748cdb7ddf200e049909f.jpg',
-        '21a9ee42fff94b6b99185824ec3c70a5.jpg',
-        '4ca6812db71043009bbd62d28d61ed34.jpg',
-        '0b5deb6cf6ad46a39fedc540cc4168d9.jpg',
-        'f04d30c781154a4794b649890939cae1.jpg',
-        'f5353761ee044a0d8c4238222b972c2e.jpg',
-        'c99a8b4bbe1b44559790a696364bcd3c.jpg',
-        'b80f3282e5d8424b940541fde715437c.jpg',
-        'c9d86ae93f89464ea471e3af8c4fd8c7.jpg',
-        'c8c3a2ab2f5b45d98af2cc34d9418d06.jpg',
-    ]
-    data_path = Path(__file__).parent.parent / 'data' / 'laptop'
-    for image_hash in LAPTOP_HASHES:
-        p = predict_for(data_path / image_hash)
-        print(p)
-
-    PC_HASHES = [
-        '5a8e0e6394f3422dba39ba652ee81fbd.jpg',
-        '5ac045988d134cd6bbf4b9c690534710.jpg',
-        '5f9bca84ff3d44939f8fdde373a97216.jpg',
-        '7eaecc5c6b454255a9540e384571887f.jpg',
-        '8b118a624072410380ae62fec9286690.jpg',
-        '8d83984513bc4bafba93f9d160c2435b.jpg',
-        '08ee1aa72b96483894949430d7b21b9d.jpg',
-        '9b94bd7df7ea4bb1957d2e2d15db29c4.jpg',
-        '9f42b1b8edb04ac38b5628909f83a97e.jpg',
-        '20ebd96e7afe47a19e04222c6b59389a.jpg',
-    ]
-    data_path = Path(__file__).parent.parent / 'data' / 'pc'
-    for image_hash in PC_HASHES:
-        p = predict_for(data_path / image_hash)
-        print(p)
 
 
 def load_model():
@@ -75,7 +33,19 @@ def load_model():
     )
 
 
-def predict_for(img_path):
+def predict_for(img_path) -> dict:
+    # The pseudo batch of one image of size (224, 224, 3)
+    # Required for model compatibility
+    img_batch = preprocess_for_prediction(img_path)
+    prediction = model.predict(img_batch)[0]
+    if prediction[0] > prediction[1]:
+        class_name = 'Laptop'
+    else:
+        class_name = 'Desktop PC'
+    return dict(class_name=class_name, laptop=prediction[0], pc=prediction[1])
+
+
+def predict_with_heatmap_for(img_path) -> (dict, Image):
     # The pseudo batch of one image of size (224, 224, 3)
     # Required for model compatibility
     img_batch = preprocess_for_prediction(img_path)
@@ -114,18 +84,15 @@ def predict_for(img_path):
 
     # Overlay heatmap on the source image
     source_img = Image.fromarray(img.astype('uint8'))
-    img_with_heatmap_overlaid = Image.blend(source_img, heatmap_img_up, 0.75)
-
-    output_path = Path(__file__).parent.parent / 'laptoppc/static/output'
-    filename = img_path.stem + '-localized' + img_path.suffix
-    filepath = output_path / filename
-    img_with_heatmap_overlaid.save(filepath)
+    img_with_heatmap_overlaid = Image.blend(source_img, heatmap_img_up, 0.8)
 
     if predicted_class_ix == 0:
         class_name = 'Laptop'
     else:
         class_name = 'Desktop PC'
-    return dict(class_name=class_name, laptop=predictions[0], pc=predictions[1])
+    pred = dict(class_name=class_name, laptop=predictions[0], pc=predictions[1])
+
+    return pred, img_with_heatmap_overlaid
 
 
 def preprocess_for_prediction(img_path):
@@ -136,7 +103,3 @@ def preprocess_for_prediction(img_path):
     # Expand array into (1, 224, 224, 3)
     img_batch = np.expand_dims(img, axis=0)
     return img_batch
-
-
-if __name__ == "__main__":
-    main()
