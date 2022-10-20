@@ -3,6 +3,7 @@
 data
 laptoppc/static/uploads
 laptoppc/static/output
+laptoppc/static/output.bak
 __pycache__
 .venv
 model/*.bak

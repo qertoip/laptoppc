@@ -22,7 +22,7 @@ UPLOAD_FOLDER = Path(__file__).parent / 'static/uploads/'
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
 
 model: Union[keras.Model, None] = None
-model2: Union[keras.Model, None] = None
+model_with_heatmap: Union[keras.Model, None] = None
 
 flask: Flask = Flask(__name__)
 
@@ -99,7 +99,7 @@ def load_model():
     model.load_weights(model_path())
 
     # This wrapper is necessary to extract internal layer outputs
-    global model2
+    global model_with_heatmap
     model2 = keras.Model(
         inputs=model.input,
         outputs=[
@@ -133,7 +133,7 @@ def predict_with_heatmap_for(path):
     img_batch = preprocess_for_prediction(path)
 
     # Predict
-    last_conv_output, pred_vec = model2.predict(img_batch)
+    last_conv_output, pred_vec = model_with_heatmap.predict(img_batch)
 
     # Process output
     last_conv_output = np.squeeze(last_conv_output)  # (1, 7, 7, 1280) => (7, 7, 1280)
