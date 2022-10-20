@@ -1,2 +1,2 @@
 cd laptoppc
-../.venv/bin/python ../.venv/bin/gunicorn "webserver:init_app()"
+../.venv/bin/python ../.venv/bin/gunicorn "webserver:production_main()"

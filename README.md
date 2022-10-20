@@ -25,19 +25,21 @@ After cloning the repository, please run:
 Running
 -------
 
-Trained model is embedded in the project so you can go straight to running a webapp if you like. 
+The trained model is embedded in the project so you can go straight to running a webapp. 
 
 To run webserver locally:
 
     poetry shell
-    python laptoppc/webserver.py    # .venv is created by `poetry install` somewhere
+    python laptoppc/webserver.py
 
 Then go to: http://127.0.0.1:5000/
 
 Modifying
 ---------
 
-Trained model is embedded in the project so you can go straight to running these commands if you like.
+The trained model is embedded in the project so you can go straight to running these commands.
+
+To run example predictions, run `python laptoppc/test.py`
 
 To print model summary, run `python laptoppc/print_model.py`
 
