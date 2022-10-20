@@ -9,13 +9,13 @@ def root_path():
 
 def data_path():
     path = root_path() / 'data'
-    path.mkdir(exist_ok=True)
+    path.mkdir(exist_ok=True, parents=True)
     return path
 
 
 def model_path():
     path = root_path() / 'model'
-    path.mkdir(exist_ok=True)
+    path.mkdir(exist_ok=True, parents=True)
     return path / 'effnet_based_laptop_vs_pc_classifier.h5'
 
 

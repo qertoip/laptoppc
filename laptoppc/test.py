@@ -24,7 +24,9 @@ def main():
 
 def save(heatmap: Image, img_name: str):
     filename = Path(img_name).stem + '-localized' + Path(img_name).suffix
-    filepath = root_path() / 'laptoppc' / 'static' / 'output' / filename
+    dir = root_path() / 'laptoppc' / 'static' / 'output'
+    dir.mkdir(exist_ok=True, parents=True)
+    filepath = dir / filename
     heatmap.save(filepath)
 
 

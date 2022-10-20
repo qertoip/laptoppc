@@ -60,7 +60,9 @@ def upload_image():
         return redirect(request.url)
     if file and allowed_file_ext(file.filename):
         filename = secure_filename(file.filename)
-        path = Path(flask.config['UPLOAD_FOLDER']) / filename
+        dir = Path(flask.config['UPLOAD_FOLDER'])
+        dir.mkdir(exist_ok=True, parents=True)
+        path = dir / filename
         file.save(path)
 
         filetype = imghdr.what(path)

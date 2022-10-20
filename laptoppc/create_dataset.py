@@ -19,7 +19,7 @@ def main():
 def create_dataset(categories):
     for category in categories:
         cat_path = data_path() / category
-        cat_path.mkdir(exist_ok=True)
+        cat_path.mkdir(exist_ok=True, parents=True)
         ddg.download(category, cat_path, max_urls=500, parallel=True)
 
 
