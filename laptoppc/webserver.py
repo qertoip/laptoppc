@@ -34,6 +34,7 @@ def development_main():
 
 
 def before_wsgi_app():
+    flask.secret_key = os.urandom(24)  # we don't need session persistence across restarts
     flask.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     flask.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     load_model()

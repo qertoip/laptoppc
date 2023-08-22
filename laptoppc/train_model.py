@@ -1,5 +1,7 @@
 import os
 import logging as log
+from datetime import datetime
+from pathlib import Path
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # silence TF logging (must be run before importing tf or keras)
 import tensorflow as tf
@@ -10,7 +12,7 @@ import keras.optimizers
 import keras.callbacks
 
 
-from common import data_path, model_path
+from common import data_path, model_path, root_path
 from create_model import create_model
 
 
@@ -51,10 +53,15 @@ def read_dataset():
 
 def train_model(model: keras.Model, train_set, test_set):
     checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_path(), save_best_only=True)
+
+    log_dir: Path = root_path() / 'log' / 'fit' / datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_dir.mkdir(exist_ok=True, parents=True)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
     model.fit(
         train_set,
         epochs=8,
-        callbacks=[checkpoint],
+        callbacks=[checkpoint, tensorboard_callback],
         validation_data=test_set
     )
     model.save(filepath=model_path())
