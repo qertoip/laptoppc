@@ -27,7 +27,7 @@
         {% endif %}
         {% endwith %}
     </p>
-    <form method="post" action="/" enctype="multipart/form-data">
+    <form method="post" action="{{ url_for('upload_image') }}" enctype="multipart/form-data">
         <div style="width: 100%;">
         <div style="float: left;">
             <p>

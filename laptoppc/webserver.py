@@ -35,6 +35,7 @@ def development_main():
 
 def before_wsgi_app():
     flask.secret_key = os.urandom(24)  # we don't need session persistence across restarts
+    flask.config['APPLICATION_ROOT'] = '/laptoppc'
     flask.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     flask.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     load_model()
@@ -44,12 +45,12 @@ def allowed_file_ext(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@flask.route('/')
+@flask.route('/laptoppc/')
 def upload_form():
     return render_template('upload.html')
 
 
-@flask.route('/', methods=['POST'])
+@flask.route('/laptoppc/', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
         flash('No file part')
@@ -84,9 +85,9 @@ def upload_image():
         return redirect(request.url)
 
 
-@flask.route('/display/<filename>')
+@flask.route('/laptoppc/display/<filename>')
 def display_image(filename):
-    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+    return redirect('/laptoppc' + url_for('static', filename='uploads/' + filename), code=302)
 
 
 def save_aside(img: Image, path: Path) -> str:

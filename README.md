@@ -12,7 +12,7 @@ This is example use of:
 Demo
 ----
 
-See it in action at: https://ml.qertoip.com/
+See it in action at: https://ml.qertoip.com/laptoppc/
 
 Installation
 ------------
