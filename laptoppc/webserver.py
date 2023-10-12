@@ -19,17 +19,22 @@ model: Union[keras.Model, None] = None
 model_with_heatmap: Union[keras.Model, None] = None
 
 flask: Flask = Flask(__name__)
+env = None
 
 
 # Entry point for gunicorn in production (must return WSGI app)
 def production_main() -> Flask:
     before_wsgi_app()
+    global env
+    env = 'prod'
     return flask  # must return WSGI app to satisfy gunicorn
 
 
 # Entry point for development (no gunicorn, bare Flask)
 def development_main():
     before_wsgi_app()
+    global env
+    env = 'dev'
     flask.run()
 
 
@@ -39,6 +44,7 @@ def before_wsgi_app():
     flask.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     flask.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     load_model()
+    print('\nGo to: http://127.0.0.1:5000/laptoppc/\n')
 
 
 def allowed_file_ext(filename):
@@ -87,7 +93,10 @@ def upload_image():
 
 @flask.route('/laptoppc/display/<filename>')
 def display_image(filename):
-    return redirect('/laptoppc' + url_for('static', filename='uploads/' + filename), code=302)
+    if env == 'dev':
+        return redirect(url_for('static', filename='uploads/' + filename), code=302)
+    else:
+        return redirect('/laptoppc' + url_for('static', filename='uploads/' + filename), code=302)
 
 
 def save_aside(img: Image, path: Path) -> str:

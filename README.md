@@ -17,32 +17,44 @@ See it in action at: https://ml.qertoip.com/laptoppc/
 Installation
 ------------
 
+Tested on Python 3.10.12.
+
 After cloning the repository, please run:
 
     cd laptoppc
-    poetry install
+    bin/reset-venv  # creates .venv and installs dependencies
 
 Running
 -------
 
-The trained model is embedded in the project so you can go straight to running a webapp. 
+The trained model is embedded in the project,
+so you can go straight to running a webapp. 
 
 To run webserver locally:
 
-    poetry shell
-    python laptoppc/webserver.py
+    bin/dev-server
 
-Then go to: http://127.0.0.1:5000/
+Then go to: http://127.0.0.1:5000/laptoppc/
 
 Modifying
 ---------
 
-The trained model is embedded in the project so you can go straight to running these commands.
+The trained model is embedded in the project,
+so you can go straight to running these commands.
 
-To run example predictions, run `python laptoppc/test.py`
+Always start by activating venv: `source .venv/bin/activate`
 
-To print model summary, run `python laptoppc/print_model.py`
+To run some example predictions, run `python laptoppc/main_example.py`
 
-To train model from data, run `python laptoppc/train_model.py`
+To visualize NN, run `python laptoppc/main_visualize_model.py`
 
-To recreate data directory, uncomment and run `python laptoppc/create_dataset.py` (not recommended because you will need to manually cleanup the dataset).
+To train model from data, run `python laptoppc/main_train.py`
+
+To recreate data directory, uncomment and run `python laptoppc/main_create_dataset.py` (not recommended because you will need to manually clean up the dataset).
+
+
+Visualization of base vs finetuned
+----------------------------------
+
+See [model/base_model.png](model/base_model.png) vs [model/finetuned_model.png](model/finetuned_model.png). 
+The final 3 layers differ between base and finetuned model, as expected.

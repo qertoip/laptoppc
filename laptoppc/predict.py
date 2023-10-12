@@ -8,7 +8,7 @@ import keras
 import matplotlib.cm as colormap
 from PIL import Image
 
-from common import scale_to_0_1, scale_to_0_255, model_path
+from tools import scale_to_0_1, scale_to_0_255, model_path
 from create_model import create_model
 
 
